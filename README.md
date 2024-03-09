@@ -14,3 +14,6 @@ This project is made as a final project for school in Ort ironi D Modi'in. </br>
 
 ## Project's workflow chart
 ![workflow_chart](Untitled.png?raw=true "Workflow chart")
+
+<b>Note:</b> The "model" in question is the AI model we trained to achieve bird recognision.</br>
+The model is trained and ran using openCV in python.
