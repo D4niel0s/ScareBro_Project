@@ -12,32 +12,25 @@
 #include <WiFi.h>
 #include <WebSocketsServer.h>
 
-// Select camera model
-#define CAMERA_MODEL_WROVER_KIT // Has PSRAM
-#include "camera_pins.h" // This must come after camera model has been selected
+#define CAMRE_MODEL_AI_THINKER // Has PSRAM
+#include "camera_pins.h"
 
-const char* ssid     = "********";     // input your wifi name
-const char* password = "********";   // input your wifi passwords
+const char* ssid     = "********";
+const char* password = "********";
 
 
 // Globals
 WebSocketsServer webSocket = WebSocketsServer(80);
  
-// Called when receiving any WebSocket message
-void onWebSocketEvent(uint8_t num,
-                      WStype_t type,
-                      uint8_t * payload,
-                      size_t length) {
+//Called on every socket event
+void onWebSocketEvent(uint8_t num,WStype_t type,uint8_t * payload,size_t length) {
 
-  // Figure out the type of WebSocket event
   switch(type) {
 
-    // Client has disconnected
     case WStype_DISCONNECTED:
       Serial.printf("[%u] Disconnected!\n", num);
       break;
 
-    // New client has connected
     case WStype_CONNECTED:
       {
         IPAddress ip = webSocket.remoteIP(num);
@@ -56,11 +49,12 @@ void onWebSocketEvent(uint8_t num,
         Serial.println("Capture Command Received - capturing frame");
 
         camera_fb_t * fb = NULL;
-        fb = esp_camera_fb_get(); // get image... part of work-around to get latest image
-        esp_camera_fb_return(fb); // return fb... part of work-around to get latest image
+        //Get and return frame buffer - a workaround to get the latest frame to send
+        fb = esp_camera_fb_get();
+        esp_camera_fb_return(fb);
         
         fb = NULL;
-        fb = esp_camera_fb_get(); // get fresh image
+        fb = esp_camera_fb_get(); // get latest image
         size_t fbsize = fb->len;
         Serial.println(fbsize);
         Serial.println("Image captured. Returning frame buffer data.");
@@ -75,12 +69,6 @@ void onWebSocketEvent(uint8_t num,
 
     // For everything else: do nothing
     case WStype_BIN:
-     // Serial.printf("[%u] get binary length: %u\n", num, length);
-     // hexdump(payload, length);
-
-      // send message to client
-      // webSocket.sendBIN(num, payload, length);
-     // break;
     case WStype_ERROR:
     case WStype_FRAGMENT_TEXT_START:
     case WStype_FRAGMENT_BIN_START:
@@ -116,21 +104,19 @@ void setup() {
   config.pin_pwdn = PWDN_GPIO_NUM;
   config.pin_reset = RESET_GPIO_NUM;
   config.xclk_freq_hz = 20000000;
-  config.pixel_format = PIXFORMAT_GRAYSCALE;
+  config.pixel_format = PIXFORMAT_JPEG;
   config.grab_mode = CAMERA_GRAB_LATEST; //CAMERA_GRAB_WHEN_EMPTY; //
   
-  // if PSRAM IC present, init with UXGA resolution and higher JPEG quality
-  //                      for larger pre-allocated frame buffer.
-  //if(psramFound()){
-  //  config.frame_size = FRAMESIZE_UXGA;
-  //  config.jpeg_quality = 10;
-  //  config.fb_count = 2;
-  //} else {
-  config.frame_size = FRAMESIZE_QVGA; //FRAMESIZE_96X96; //FRAMESIZE_QQVGA; //FRAMESIZE_SVGA;
-  config.jpeg_quality = 12;
-  config.fb_count = 1;
-  config.fb_location = CAMERA_FB_IN_DRAM;
-  //}
+  if(psramFound()){
+    config.frame_size = FRAMESIZE_UXGA;
+    config.jpeg_quality = 10;
+    config.fb_count = 2;
+  }else{
+    config.frame_size = FRAMESIZE_QVGA; //FRAMESIZE_96X96; //FRAMESIZE_QQVGA; //FRAMESIZE_SVGA;
+    config.jpeg_quality = 12;
+    config.fb_count = 1;
+    config.fb_location = CAMERA_FB_IN_DRAM;
+  }
 
   // camera init
   esp_err_t err = esp_camera_init(&config);
@@ -141,7 +127,7 @@ void setup() {
 
   sensor_t * s = esp_camera_sensor_get();
   // drop down frame size for higher initial frame rate
-  s->set_framesize(s, FRAMESIZE_QVGA);
+  s->set_framesize(s, FRAMESIZE_UXGA);
 
   WiFi.begin(ssid, password);
 
