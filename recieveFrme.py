@@ -3,9 +3,6 @@
 # Reference... https://shawnhymel.com/1675/arduino-websocket-server-using-an-esp32/
 # also https://www.dfrobot.com/blog-1194.html?tracking=5cc027fb1dc4e
 import websocket # pip install websocket-client
-import numpy as np
-import matplotlib.pyplot as plt
-from PIL import Image
 
 ws = websocket.WebSocket()
 ws.connect("ws://192.168.xx.xxx") # Use the IP address from the ESP32 board - printed to the serial monitor
@@ -21,12 +18,10 @@ while(1):
 
     # Wait for server to respond and print it
     if (str == "capture"):
-        binResp = ws.recv_frame() # receiving binary image data from camera
-        binDat = bytearray(binResp.data)
+        binResp = ws._recv(1000000) # receiving binary image data from camera
 
-        IMG = Image.frombytes(mode='RGB', size=len(binDat), data=binDat, decoder_name='raw')
-
-        IMG.save("stream.jpg")
+        with open("stream.jpg", 'wb') as f:
+            f.write(binResp)
 
     else:
        result = ws.recv()
