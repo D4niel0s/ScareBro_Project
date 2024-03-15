@@ -17,14 +17,14 @@ while(1):
         break
     
     # sent the input string across the socket
-    ws.send(str)
+    ws.send(str) # Triggers onWebSocketEvent()
 
     # Wait for server to respond and print it
     if (str == "capture"):
-        binResp = ws.recv_frame() # receiving binary image data (we assume grey scale) from camera
+        binResp = ws.recv_frame() # receiving binary image data from camera
         binDat = bytearray(binResp.data)
 
-        IMG = Image.frombytes(mode='RGBA', size=len(binDat), data=binDat, decoder_name='raw')
+        IMG = Image.frombytes(mode='RGB', size=len(binDat), data=binDat, decoder_name='raw')
 
         IMG.save("stream.jpg")
 
