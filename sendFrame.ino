@@ -12,7 +12,7 @@
 #include <WiFi.h>
 #include <WebSocketsServer.h>
 
-#define CAMRE_MODEL_AI_THINKER // Has PSRAM
+#define CAMERA_MODEL_AI_THINKER // Has PSRAM
 #include "camera_pins.h"
 
 const char* ssid     = "********";
