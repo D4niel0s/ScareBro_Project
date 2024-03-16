@@ -5,7 +5,7 @@
 import websocket # pip install websocket-client
 
 ws = websocket.WebSocket()
-ws.connect("ws://192.168.xx.xxx") # Use the IP address from the ESP32 board - printed to the serial monitor
+ws.connect("ws://192.168.200.126") # Use the IP address from the ESP32 board - printed to the serial monitor
 
 while(1):
     # Ask the user for some input and transmit it
@@ -18,7 +18,7 @@ while(1):
 
     # Wait for server to respond and print it
     if (str == "capture"):
-        binResp = ws._recv(1000000) # receiving binary image data from camera
+        binResp = ws.recv() # receiving binary image data from camera
 
         with open("stream.jpg", 'wb') as f:
             f.write(binResp)
