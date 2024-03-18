@@ -8,11 +8,10 @@ from datetime import datetime
 
 ws = websocket.WebSocket()
 ws.connect("ws://192.168.200.126") # Use the IP address from the ESP32 board - printed to the serial monitor
-now = datetime.now()
 
 while(1):
-    prev = now
     now = datetime.now()
+    prev = now
 
     ws.send("capture") # Triggers onWebSocketEvent()
 
