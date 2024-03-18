@@ -30,5 +30,6 @@ To run (/activate) the image streaming, enter the wi-fi network's credentials in
 Then upload the sketch to the camera, and run the provided python script on the recieving machine.</br>
 <b>Notes:</b></br>
 * The recieving machine has to be connected to the same wi-fi network as the camera.
+* The "stream" is actually an updating image, which will be created in the same folder the script's running in.
 * The python script also prints the timedelta between each two frames.
 * To stop the stream, kill the python script. (This isn't optimal but we need the stream to run indefinitely)
