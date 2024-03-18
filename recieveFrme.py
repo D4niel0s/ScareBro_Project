@@ -3,29 +3,24 @@
 # Reference... https://shawnhymel.com/1675/arduino-websocket-server-using-an-esp32/
 # also https://www.dfrobot.com/blog-1194.html?tracking=5cc027fb1dc4e
 import websocket # pip install websocket-client
+import datetime
 
 ws = websocket.WebSocket()
 ws.connect("ws://192.168.200.126") # Use the IP address from the ESP32 board - printed to the serial monitor
+now = datetime.now()
 
 while(1):
-    # Ask the user for some input and transmit it
-    str = input("Say something: ")
-    if (str == "exit"):
-        break
-    
-    # sent the input string across the socket
-    ws.send(str) # Triggers onWebSocketEvent()
+    prev = now
+    now = datetime.now()
 
-    # Wait for server to respond and print it
-    if (str == "capture"):
-        binResp = ws.recv() # receiving binary image data from camera
+    ws.send("capture") # Triggers onWebSocketEvent()
 
-        with open("stream.jpg", 'wb') as f:
-            f.write(binResp)
+    binResp = ws.recv() # receiving binary image data from camera
 
-    else:
-       result = ws.recv()
-       print("Received: " + result)
+    with open("stream.jpg", 'wb') as f:
+        f.write(binResp)
+        
+    print(now-prev)
 
-# Gracefully close WebSocket connection
+# Gracefully close WebSocket connection (Will never get here, connection will be abruptly closed when code is stopped)
 ws.close()
