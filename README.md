@@ -24,7 +24,7 @@ As mentioned before, The image streaming here is done from an AI_THINKER ESP32-C
 This camera is equipped with a wi-fi module, which allowes us to run a websocket-server on it.</br>
 We then run a python script which recieves the image on a differrent machine. (In this case a laptop)
 
-#### Running and technical specifications
+### Running and technical specifications
 
 To run (/activate) the image streaming, enter the wi-fi network's credentials into the ```.ino``` file in the correct variables.</br>
 Then upload the sketch to the camera, and run the provided python script on the recieving machine.</br>
