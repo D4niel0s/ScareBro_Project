@@ -3,7 +3,8 @@
 # Reference... https://shawnhymel.com/1675/arduino-websocket-server-using-an-esp32/
 # also https://www.dfrobot.com/blog-1194.html?tracking=5cc027fb1dc4e
 import websocket # pip install websocket-client
-import datetime
+from datetime import timedelta
+from datetime import datetime
 
 ws = websocket.WebSocket()
 ws.connect("ws://192.168.200.126") # Use the IP address from the ESP32 board - printed to the serial monitor
@@ -20,7 +21,8 @@ while(1):
     with open("stream.jpg", 'wb') as f:
         f.write(binResp)
         
-    print(now-prev)
+    delta = now-prev
+    print(delta)
 
 # Gracefully close WebSocket connection (Will never get here, connection will be abruptly closed when code is stopped)
 ws.close()
