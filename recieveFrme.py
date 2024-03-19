@@ -1,7 +1,3 @@
-# Tinker Foundry
-# Using websockets with ESP32 to transfer image data...
-# Reference... https://shawnhymel.com/1675/arduino-websocket-server-using-an-esp32/
-# also https://www.dfrobot.com/blog-1194.html?tracking=5cc027fb1dc4e
 import websocket # pip install websocket-client
 from datetime import datetime, timedelta
 

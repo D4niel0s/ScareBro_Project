@@ -1,13 +1,3 @@
-// refer to https://shawnhymel.com/1675/arduino-websocket-server-using-an-esp32/
-// To make sure WebSocketServer.h is available:
-//    Sketch > Include Library > Manage Libraries
-//    Search for "WebSockets Sattler' and install the library named "WebSockets by Markus Sattler"
-//
-// WARNING!!! PSRAM IC required for UXGA resolution and high JPEG quality
-//            Ensure ESP32 Wrover Module or other board with PSRAM is selected
-//            Partial images will be transmitted if image exceeds buffer size
-//
-
 #include "esp_camera.h"
 #include <WiFi.h>
 #include <WebSocketsServer.h>
