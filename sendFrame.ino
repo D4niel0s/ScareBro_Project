@@ -29,9 +29,9 @@ void onWebSocketEvent(uint8_t num,WStype_t type,uint8_t * payload,size_t length)
       }
       break;
 
-    // Echo text message back to client
+    //Capture frame when getting a text event
     case WStype_TEXT:
-      if (String((char*)payload) == "capture"){
+      {
         camera_fb_t * fb = NULL;
         //Get and return frame buffer - a workaround to get the latest frame to send
         fb = esp_camera_fb_get();
@@ -39,12 +39,9 @@ void onWebSocketEvent(uint8_t num,WStype_t type,uint8_t * payload,size_t length)
         
         fb = NULL;
         fb = esp_camera_fb_get(); // get latest image
-        size_t fbsize = fb->len;
-        Serial.println(fbsize);
         
-        webSocket.sendBIN(num, fb->buf, fbsize);
+        webSocket.sendBIN(num, fb->buf, fb->len);
         esp_camera_fb_return(fb);
-        
       }
       break;
 
