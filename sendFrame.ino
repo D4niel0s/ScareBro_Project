@@ -41,13 +41,7 @@ void onWebSocketEvent(uint8_t num,WStype_t type,uint8_t * payload,size_t length)
 
     // Echo text message back to client
     case WStype_TEXT:
-      Serial.printf("[%u] Text: %s\n", num, payload);
-      Serial.println((char*)payload);
-
-      if (String((char*)payload) == "capture")
-      {
-        Serial.println("Capture Command Received - capturing frame");
-
+      if (String((char*)payload) == "capture"){
         camera_fb_t * fb = NULL;
         //Get and return frame buffer - a workaround to get the latest frame to send
         fb = esp_camera_fb_get();
@@ -57,13 +51,10 @@ void onWebSocketEvent(uint8_t num,WStype_t type,uint8_t * payload,size_t length)
         fb = esp_camera_fb_get(); // get latest image
         size_t fbsize = fb->len;
         Serial.println(fbsize);
-        Serial.println("Image captured. Returning frame buffer data.");
+        
         webSocket.sendBIN(num, fb->buf, fbsize);
         esp_camera_fb_return(fb);
-        Serial.println("Done");
-      } else
-      {
-        webSocket.sendTXT(num, payload);
+        
       }
       break;
 
@@ -117,6 +108,7 @@ void setup() {
     config.fb_count = 1;
     config.fb_location = CAMERA_FB_IN_DRAM;
   }
+  config.frame_size = FRAMESIZE_QVGA; //temporarily here - testing diferrent frame sizes
 
   // camera init
   esp_err_t err = esp_camera_init(&config);
