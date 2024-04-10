@@ -7,11 +7,8 @@ s = serial.Serial(port, 9600)
 s.flushInput()
 
 
-inp = input("choose song")
+inp = int(input("choose song:\t")) #In the real script, this variable will be the output of the classification
 
-if(inp=="1"):
-    s.write(b'1')
-elif(inp=="2"):
-    s.write(b'2')
+s.write(inp.to_bytes())
     
 s.close()
