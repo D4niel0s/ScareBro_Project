@@ -1,10 +1,21 @@
-int ledPin = 13;
-int state = 0;
+#include <SoftwareSerial.h>
+#include "RedMP3.h"
 
+#define MP3_RX 4
+#define MP3_TX 2
+
+MP3 mp3(MP3_RX, MP3_TX);
+
+int8_t volume = 0x1a;
+int8_t folderName = 0x01;
+int8_t fileName = 0x01;
+
+int state;
 
 void setup(){
-    pinMode(ledPin, OUTPUT);
-    digitalWrite(ledPin, LOW);
+    delay(500);
+    mp3.setVolume(volume);
+    delay(50);
 
     Serial.begin(9600);
 }
@@ -13,12 +24,17 @@ void loop(){
     if(Serial.available() > 0){
         state = Serial.read();
     }
-    
-    if(state == '1'){
-        digitalWrite(ledPin, HIGH);
-        Serial.write("LED: ON");
-    }else if(state == '0'){
-        digitalWrite(ledPin, LOW);
-        Serial.write("LED: OFF");
+
+    switch(state){
+        case 1:
+            mp3.playWithFileName(01,001);
+            break;
+        case 2:
+            mp3.playWithFileName(01,002);
+            break;
+        default:
+            break;
     }
+
+    delay(50);
 }
