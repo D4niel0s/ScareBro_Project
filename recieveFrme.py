@@ -1,11 +1,11 @@
-import serial
+import serial # pip install pyserial
 import websocket # pip install websocket-client
 from datetime import datetime, timedelta
 
 cam = websocket.WebSocket()
 cam.connect("ws://192.168.200.126") # Use the IP address from the ESP32 board - printed to the serial monitor
 
-bt = serial.Serial("COM10", 9600)
+bt = serial.Serial("COM10", 9600) # port of the connected usb module (pair with laptop first)
 bt.flushInput()
 
 def main():
