@@ -1,9 +1,12 @@
+import serial
 import websocket # pip install websocket-client
 from datetime import datetime, timedelta
 
-ws = websocket.WebSocket()
-ws.connect("ws://192.168.200.126") # Use the IP address from the ESP32 board - printed to the serial monitor
+cam = websocket.WebSocket()
+cam.connect("ws://192.168.200.126") # Use the IP address from the ESP32 board - printed to the serial monitor
 
+bt = serial.Serial("COM10", 9600)
+bt.flushInput()
 
 def main():
     threshhold = timedelta(seconds=0.05)
@@ -16,13 +19,19 @@ def main():
         if(delta >= threshhold):
             recieve_frame()
             lastRecieved = datetime.now()
-            print(delta)
+            #HERE GOES CALCULATION
+            song = "1".encode()
+
+            bt.write(song)
+    
+    bt.close()
+    cam.close()
 
 
 def recieve_frame():
-    ws.send("") # Triggers onWebSocketEvent() of TEXT type
+    cam.send("") # Triggers onWebSocketEvent() of TEXT type
 
-    binResp = ws.recv() # receiving binary image data from camera
+    binResp = cam.recv() # receiving binary image data from camera
 
     with open("stream.jpg", 'wb') as f:
         f.write(binResp)
