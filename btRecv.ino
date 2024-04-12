@@ -13,23 +13,23 @@ int8_t fileName = 0x01;
 int state;
 
 void setup(){
-    delay(500);
+    delay(500); /*Delay neccessary for initialization on mp3 object*/
     mp3.setVolume(volume);
-    delay(50);
+    delay(50); /*Same here*/
 
     Serial.begin(9600);
 }
 
 void loop(){
     if(Serial.available() > 0){
-        state = Serial.read();
+        state = Serial.read(); /*Reads first byte from input buffer*/
     }
 
     switch(state){
-        case 1:
+        case '1':
             mp3.playWithFileName(01,001);
             break;
-        case 2:
+        case '2':
             mp3.playWithFileName(01,002);
             break;
         default:
