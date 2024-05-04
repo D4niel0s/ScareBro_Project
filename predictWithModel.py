@@ -4,10 +4,9 @@ import cv2
 model = YOLO("../model&stats/weights/best.pt")
 model.to('cpu')
 
-frame = cv2.imread("tstimg.jpg")
-
 threshold = 0.5
 
+frame = cv2.imread("tstimg.jpg")
 results = model(frame)[0]
 
 for result in results.boxes.data.tolist():
