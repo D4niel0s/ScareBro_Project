@@ -11,13 +11,13 @@ bt.reset_input_buffer()
 def main():
     threshhold = timedelta(seconds=0.05)
 
-    recieve_frame()
+    frameToFile()
     lastRecieved = datetime.now()
 
     while(1):
         delta = datetime.now() - lastRecieved
         if(delta >= threshhold):
-            recieve_frame()
+            frameToFile()
             lastRecieved = datetime.now()
             #HERE GOES CALCULATION
             song = "1".encode()
@@ -30,7 +30,7 @@ def main():
     cam.close()
 
 #Recieves a frame from cam and writes it to a file "stream.jpg" in the current directory
-def recieve_frame():
+def frameToFile():
     cam.send("") # Triggers onWebSocketEvent() of TEXT type
 
     binResp = cam.recv() # receiving binary image data from camera
