@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 
 # Connect to camera
 cam = websocket.WebSocket()
-cam.connect("ws://192.168.200.126") # Use the IP address from the ESP32 board - printed to the serial monitor
+cam.connect("ws://192.168.102.44") # Use the IP address from the ESP32 board - printed to the serial monitor
 STREAM_FILENAME = "stream.jpg"
 OUTPUT_FILENAME = "output.jpg"
 
@@ -17,7 +17,7 @@ bt = serial.Serial("COM10", 9600) # port of the connected usb module (pair with 
 bt.reset_input_buffer()
 
 # Create a classifier object from the trained model
-model = YOLO("../model&stats/weights/best.pt") # Create classifier
+model = YOLO("../secondModel&stats/weights/best.pt") # Create classifier
 model.to('cpu') # Model was trained on GPU so needs to be converted to cpu for detection
 MIN_SCORE = 0.5 # The minimum "confidence" that we want in order to count as a classification
 
@@ -63,6 +63,7 @@ def classify():
     frame = cv2.imread(STREAM_FILENAME) 
     res = model(frame)[0] # Recognize using model
 
+    class_id = -1
     # Draw a bounding box around each recognition
     for result in res.boxes.data.tolist():
         x1, y1, x2, y2, score, class_id = result
