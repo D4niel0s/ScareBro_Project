@@ -47,8 +47,14 @@ void loop(){
     /*If we played a song*/
     if(flag){
         delay(2024);
-        Serial.flush(); /*Flush any remainder that might have came when we were playing*/
+        flushBuff(); /*Flush any remainder that might have came when we were playing*/
     }
 
     delay(50);
+}
+
+void flushBuff(){
+    while(Serial.avilble() > 0){
+        char t = Serial.read();
+    }
 }
