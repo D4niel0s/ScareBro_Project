@@ -1,6 +1,8 @@
 #include <SoftwareSerial.h>
 #include "RedMP3.h"
 
+void(* resetFunc) (void) = 0;
+
 #define MP3_RX 4
 #define MP3_TX 2
 
@@ -19,10 +21,9 @@ void setup(){
     delay(50); /*Same here*/
 
     Serial.begin(9600);
-}
 
-void loop(){
     flag = false;
+    state = 0;
 
     if(Serial.available() > 0){
         state = Serial.read(); /*Reads first byte from input buffer*/
@@ -46,15 +47,12 @@ void loop(){
     }
     /*If we played a song*/
     if(flag){
-        delay(2024);
-        flushBuff(); /*Flush any remainder that might have came when we were playing*/
+        delay(3024);
+        Serial.end();
     }
-
     delay(50);
 }
 
-void flushBuff(){
-    while(Serial.avilble() > 0){
-        char t = Serial.read();
-    }
+void loop(){
+    resetfunc();
 }
