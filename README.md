@@ -13,7 +13,7 @@ This project is made as a final project for school in Ort ironi D Modi'in. </br>
   * The "server" is running on a personal computer. Its purpose is to receive the image stream from the ESP32-CAM, decide wether or not is there a bird in frame, and send the output to the Arduino-UNO to continue deterring the bird.
 
 ## Project's workflow chart
-![workflow_chart](flowChart.png?raw=true "Workflow chart")
+![workflow_chart](FlowChart.png?raw=true "Workflow chart")
 
 <b>Note:</b> The "model" in question is the AI model we trained to achieve bird recognition.</br>
 The model is trained and run using OpenCV and Ultralytics' YOLO in Python.
