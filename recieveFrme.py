@@ -8,12 +8,12 @@ from datetime import datetime, timedelta
 
 # Connect to camera
 cam = websocket.WebSocket()
-cam.connect("ws://192.168.102.44") # Use the IP address from the ESP32 board - printed to the serial monitor
+cam.connect("ws://192.168.175.44") # Use the IP address from the ESP32 board - printed to the serial monitor
 STREAM_FILENAME = "stream.jpg"
 OUTPUT_FILENAME = "output.jpg"
 
 # Connect to bluetooth dongle - connected to arduino
-bt = serial.Serial("COM10", 9600) # port of the connected usb module (pair with laptop first)
+bt = serial.Serial("COM4", 9600) # port of the connected usb module (pair with laptop first)
 bt.reset_input_buffer()
 
 # Create a classifier object from the trained model
@@ -62,19 +62,20 @@ def sendBT(song:str):
 def classify():
     frame = cv2.imread(STREAM_FILENAME) 
     res = model(frame)[0] # Recognize using model
-
-    class_id = -1
+    
+    class_id = 3
     # Draw a bounding box around each recognition
     for result in res.boxes.data.tolist():
         x1, y1, x2, y2, score, class_id = result
 
         if(score > MIN_SCORE):
+            
             cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 255), 5)
             cv2.putText(frame, res.names[int(class_id)].upper(), (int(x1), int(y1 - 10)), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 255, 255), 5, cv2.LINE_8)
                     
     cv2.imwrite(OUTPUT_FILENAME,frame)
-
-    return int(class_id)
+    print("DETECTED CLASS",int(class_id))
+    return int(class_id)+1
 
 
 if(__name__ == '__main__'):

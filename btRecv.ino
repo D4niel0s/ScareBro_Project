@@ -20,8 +20,11 @@ void setup(){
     mp3.setVolume(volume);
     delay(50); /*Same here*/
 
+    delay(50);
     Serial.begin(9600);
+}
 
+void loop(){
     flag = false;
     state = 0;
 
@@ -47,12 +50,7 @@ void setup(){
     }
     /*If we played a song*/
     if(flag){
-        delay(3024);
-        Serial.end();
+        resetfunc();
     }
     delay(50);
-}
-
-void loop(){
-    resetfunc();
 }

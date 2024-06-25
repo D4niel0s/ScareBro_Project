@@ -1,6 +1,6 @@
 import serial
 
-port = "COM10"
+port = "COM4"
 s = serial.Serial(port, 9600)
 
 s.reset_input_buffer()
