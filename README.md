@@ -1,6 +1,6 @@
 # Final project - ScareBro™
 
-This project is made as a final project for school in Ort ironi D Modi'in. </br>
+This project is made as a high school final project. </br>
 <b>Project's goals: Identify incoming birds and scare them away using sound - to save them from certain death via wind turbines.</b>
 
 ## Project's hardware components
